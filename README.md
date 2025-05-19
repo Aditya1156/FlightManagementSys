@@ -1,4 +1,4 @@
-![Screenshot (11)](https://github.com/user-attachments/assets/fe37102e-caff-40e9-9557-d6c025613d62)# ✈️ Flight Management System - Java Swing Desktop Application
+ ✈️ Flight Management System - Java Swing Desktop Application
 
 ## 📌 Overview
 
@@ -33,8 +33,6 @@ The **Flight Management System** is a Java-based desktop application designed to
 - `flights` (flight_id, source, destination, duration, etc.)
 - `bookings` (booking_id, passenger_id, flight_id, date)
 
-> Note: Make sure to create the appropriate tables in MySQL and configure JDBC with correct credentials.
-
 ## 🚀 How to Run
 
 1. Clone or download this repository.
@@ -49,15 +47,35 @@ The **Flight Management System** is a Java-based desktop application designed to
 ![Screenshot (8)](https://github.com/user-attachments/assets/1b0f81df-bd48-4a36-a402-a5e10acbb68b)
 ![Screenshot (10)](https://github.com/user-attachments/assets/b4e8a436-4f08-4058-8047-9bc068ac01c2)
 ![Uploading Screenshot (![Screenshot (12)](https://github.com/user-attachments/assets/45882318-23b9-475f-98d4-2bfb85ab5fa9)
-11).png…]()
+![Screenshot (11)](https://github.com/user-attachments/assets/fe37102e-caff-40e9-9557-d6c025613d62)#
 ![Screenshot (13)](https://github.com/user-attachments/assets/9ffa496c-3cfa-4bd5-a484-5e1480aa829d)
 ![Screenshot (14)](https://github.com/user-attachments/assets/fc475257-9d5a-4c7e-9828-8635941076a8)
-
 ![Screenshot (9)](https://github.com/user-attachments/assets/284cc37d-0210-4817-bfcb-6146fad1a942)
 
 
-
-> _Add screenshots of your application's UI here, if available._
-
 ## 📁 Folder Structure
+FlightManagementSystem/
+├── src/
+│ ├── AddFlight.java
+│ ├── BookFlight.java
+│ ├── RegisteredPassenger.java
+│ ├── DatabaseConnection.java
+│ └── ... (other UI and logic files)
+├── lib/ (any MySQL JDBC driver if bundled)
+└── README.md
+
+
+## 🤝 Contributions
+
+This project was developed as part of my learning journey in Java and desktop application development. Contributions and suggestions for improvement are welcome!
+
+## 📬 Contact
+
+Feel free to contact me on www.linkedin.com/in/aditya-kumar-165911339 or reach out for collaboration opportunities or suggestions.
+
+---
+
+## 📄 License
+
+This project is for educational purposes and is open-source under the MIT License.
 
