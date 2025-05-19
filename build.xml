@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AirlineMangementSystem" default="default" basedir=".">
+    <description>Builds, tests, and runs the project AirlineMangementSystem.</description>
+
+    <!-- Define the classpath for JavaMail and other dependencies -->
+    <path id="classpath">
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- Initialize build directories -->
+    <target name="init">
+        <mkdir dir="build/classes"/>
+        <mkdir dir="build/libs"/>
+    </target>
+
+    <!-- Precompile tasks -->
+    <target name="pre-compile">
+        <echo message="Preparing to compile the source code..."/>
+    </target>
+
+    <!-- Compile the source code -->
+    <target name="compile" depends="init, pre-compile">
+        <javac srcdir="src" destdir="build/classes" classpathref="classpath" includeantruntime="false">
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <!-- Package into a JAR -->
+    <target name="build" depends="compile">
+        <jar destfile="build/libs/AirlineManagementSystem.jar" basedir="build/classes"/>
+    </target>
+
+    <!-- Support NetBeans or CLI builds expecting a 'jar' target -->
+    <target name="jar" depends="build"/>
+
+    <!-- Run the main application -->
+    <target name="run" depends="build">
+        <java classname="airlinemanagementsystem.BoardingPass" classpath="build/classes">
+            <arg value="PNR123456"/>
+        </java>
+    </target>
+
+    <!-- Send email with boarding pass -->
+    <target name="send-email" depends="build">
+        <echo message="Sending email with boarding pass..."/>
+        <java classname="airlinemanagementsystem.EmailSender" fork="true" classpath="build/classes">
+            <arg value="recipient@example.com"/>
+            <arg value="Boarding Pass for PNR123456"/>
+            <arg value="Please find your boarding pass attached."/>
+            <arg value="test/Report/boarding-pass.pdf"/>
+        </java>
+    </target>
+
+    <!-- Clean build outputs -->
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <!-- Default build target -->
+    <target name="default" depends="send-email">
+        <echo message="✅ Airline Management System - Build &amp; Email Process Complete"/>
+    </target>
+</project>

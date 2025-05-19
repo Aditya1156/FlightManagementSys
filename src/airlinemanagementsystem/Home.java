@@ -3,13 +3,13 @@ package airlinemanagementsystem;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.net.URL;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
 public class Home extends JFrame implements ActionListener {
 
-    // Button declarations
-    JButton flightDetails, addCustomer, bookFlight, journeyDetails, cancelTicket, passengerHistory, boardingPass, exitButton;
+    JButton flightDetails, addCustomer, bookFlight, journeyDetails, cancelTicket, passengerHistory, boardingPass, exitButton, registeredPassenger;
     JPanel boxPanel, appBar;
     JTextField searchField;
     JButton searchButton;
@@ -17,39 +17,26 @@ public class Home extends JFrame implements ActionListener {
     JLayeredPane layeredPane;
 
     public Home() {
-        // Set layout and layered pane
         setLayout(null);
         layeredPane = getLayeredPane();
 
-        // Load background image and add to layered pane
         loadBackgroundImage();
-
-        // Add modern App Bar
         addAppBar();
-
-        // Add heading with shadow
         addHeadingWithShadow();
-
-        // Create box panel with buttons
         addBoxPanel();
-
-        // Add airline logo at bottom left
         addAirlineLogo();
 
-        // Frame settings
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
-    // Load background image and add to layered pane
     private void loadBackgroundImage() {
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("airlinemanagementsystem/icons/front.png"));
         backgroundLabel = new JLabel(i1);
         backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
         layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
 
-        // Dynamic resizing of the background
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -60,29 +47,26 @@ public class Home extends JFrame implements ActionListener {
         });
     }
 
-    // Add heading and shadow
     private void addHeadingWithShadow() {
         JLabel heading = new JLabel("✈️ AIR INDIA WELCOMES YOU ✈️");
         heading.setBounds(450, 100, 1000, 50);
-        heading.setForeground(new Color(255, 215, 0)); // Golden color
+        heading.setForeground(new Color(255, 215, 0));
         heading.setFont(new Font("Serif", Font.BOLD, 40));
         layeredPane.add(heading, JLayeredPane.PALETTE_LAYER);
 
         JLabel shadow = new JLabel("✈️ AIR INDIA WELCOMES YOU ✈️");
         shadow.setBounds(452, 102, 1000, 50);
-        shadow.setForeground(new Color(0, 0, 0, 120)); // Shadow
+        shadow.setForeground(new Color(0, 0, 0, 120));
         shadow.setFont(new Font("Serif", Font.BOLD, 40));
         layeredPane.add(shadow, JLayeredPane.PALETTE_LAYER);
     }
 
-    // Add box panel with buttons
     private void addBoxPanel() {
-        boxPanel = new JPanel(new GridLayout(2, 4, 20, 20));
-        boxPanel.setBounds(350, 200, 900, 400);
+        boxPanel = new JPanel(new GridLayout(3, 3, 20, 20));
+        boxPanel.setBounds(350, 200, 900, 500);
         boxPanel.setOpaque(false);
         layeredPane.add(boxPanel, JLayeredPane.PALETTE_LAYER);
 
-        // Create buttons with icons and tooltips
         flightDetails = createBoxButton("Flight Details", "airplane.png", "📊 View and manage flight details.");
         addCustomer = createBoxButton("Add Customer", "user.png", "👤 Add new customer details.");
         bookFlight = createBoxButton("Book Flight", "booking.png", "🛫 Book flight tickets easily.");
@@ -91,8 +75,8 @@ public class Home extends JFrame implements ActionListener {
         passengerHistory = createBoxButton("Passenger History", "history.png", "📚 View passenger history.");
         boardingPass = createBoxButton("Boarding Pass", "boarding.png", "🎫 Generate boarding pass.");
         exitButton = createBoxButton("Exit", "exit.png", "❌ Exit the application safely.");
+        registeredPassenger = createBoxButton("Registered Passenger", "passenger.png", "👥 View all registered passengers.");
 
-        // Add buttons to the panel
         boxPanel.add(flightDetails);
         boxPanel.add(addCustomer);
         boxPanel.add(bookFlight);
@@ -100,23 +84,35 @@ public class Home extends JFrame implements ActionListener {
         boxPanel.add(cancelTicket);
         boxPanel.add(passengerHistory);
         boxPanel.add(boardingPass);
+        boxPanel.add(registeredPassenger);
         boxPanel.add(exitButton);
     }
 
-    // Add airline logo
     private void addAirlineLogo() {
-        ImageIcon logoIcon = new ImageIcon(ClassLoader.getSystemResource("airlinemanagementsystem/icons/logo.png"));
-        Image logoImage = logoIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-        JLabel logo = new JLabel(new ImageIcon(logoImage));
-        logo.setBounds(20, getHeight() - 150, 120, 120);
-        layeredPane.add(logo, JLayeredPane.PALETTE_LAYER);
+        URL logoUrl = ClassLoader.getSystemResource("airlinemanagementsystem/icons/logo.png");
+        if (logoUrl != null) {
+            ImageIcon logoIcon = new ImageIcon(logoUrl);
+            Image logoImage = logoIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            JLabel logo = new JLabel(new ImageIcon(logoImage));
+            logo.setBounds(20, getHeight() - 150, 120, 120);
+            layeredPane.add(logo, JLayeredPane.PALETTE_LAYER);
+        } else {
+            System.err.println("⚠️ Logo image not found!");
+        }
     }
 
-    // Create box button with preloaded icons and hover tooltip
     private JButton createBoxButton(String name, String iconName, String proTip) {
-        ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("airlinemanagementsystem/icons/" + iconName));
-        Image img = icon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
-        JButton button = new JButton(name, new ImageIcon(img));
+        URL resource = ClassLoader.getSystemResource("airlinemanagementsystem/icons/" + iconName);
+        JButton button;
+
+        if (resource == null) {
+            System.err.println("⚠️ Icon not found: " + iconName);
+            button = new JButton(name);
+        } else {
+            ImageIcon icon = new ImageIcon(resource);
+            Image img = icon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+            button = new JButton(name, new ImageIcon(img));
+        }
 
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -124,18 +120,15 @@ public class Home extends JFrame implements ActionListener {
         button.setFocusPainted(false);
         button.setBackground(Color.WHITE);
         button.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        button.setToolTipText(proTip);
         button.addActionListener(this);
 
-        // Set pro tip as tooltip
-        button.setToolTipText(proTip);
-
-        // Add hover and click sound effects
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(255, 140, 0)); // Orange glow on hover
+                button.setBackground(new Color(255, 140, 0));
                 button.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 3));
-                playSound("hover.wav"); // Play hover sound
+                playSound("hover.wav");
             }
 
             @Override
@@ -148,15 +141,13 @@ public class Home extends JFrame implements ActionListener {
         return button;
     }
 
-    // Add modern app bar with navigation and search bar
     private void addAppBar() {
         appBar = new JPanel(null);
-        appBar.setBackground(new Color(0, 51, 102)); // Navy Blue
+        appBar.setBackground(new Color(0, 51, 102));
         appBar.setBounds(0, 0, getWidth(), 70);
         layeredPane.add(appBar, JLayeredPane.MODAL_LAYER);
     }
 
-    // Play sound effect method
     private void playSound(String soundName) {
         try {
             File soundFile = new File("src/airlinemanagementsystem/sounds/" + soundName);
@@ -165,15 +156,16 @@ public class Home extends JFrame implements ActionListener {
             clip.open(audioStream);
             clip.start();
         } catch (Exception e) {
+            System.err.println("⚠️ Sound error: " + soundName);
             e.printStackTrace();
         }
     }
 
-    // Handle button actions
     @Override
     public void actionPerformed(ActionEvent ae) {
         String text = ae.getActionCommand();
-        playSound("click.wav"); // Play button click sound
+        playSound("click.wav");
+
         switch (text) {
             case "Flight Details" -> new FlightInfo();
             case "Add Customer" -> new AddCustomer();
@@ -182,13 +174,13 @@ public class Home extends JFrame implements ActionListener {
             case "Cancel Ticket" -> new Cancel();
             case "Passenger History" -> new PassengerHistory();
             case "Boarding Pass" -> new BoardingPass();
+            case "Registered Passenger" -> new RegisteredPassenger();
             case "Exit" -> handleExit();
         }
     }
 
-    // Handle exit with sound
     private void handleExit() {
-        playSound("exit.wav"); // Play exit sound
+        playSound("exit.wav");
         int choice = JOptionPane.showConfirmDialog(
                 this,
                 "Are you sure you want to exit?",

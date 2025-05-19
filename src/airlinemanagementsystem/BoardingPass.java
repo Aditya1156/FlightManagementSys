@@ -178,35 +178,43 @@ public class BoardingPass extends JFrame implements ActionListener {
     }
 
     // ActionListener for button
-    public void actionPerformed(ActionEvent ae) {
-        String pnr = tfpnr.getText();
+public void actionPerformed(ActionEvent ae) {
+    String pnr = tfpnr.getText();
 
-        try {
-            Conn conn = new Conn();
-            String query = "SELECT * FROM reservation WHERE PNR = '" + pnr + "'";
-            ResultSet rs = conn.s.executeQuery(query);
+    try {
+        Conn conn = new Conn();
+        String query = "SELECT * FROM reservation WHERE PNR = '" + pnr + "'";
+        ResultSet rs = conn.s.executeQuery(query);
 
-            if (rs.next()) {
-                tfname.setText(rs.getString("name"));
-                tfnationality.setText(rs.getString("nationality"));
-                lblsrc.setText(rs.getString("src"));
-                lbldest.setText(rs.getString("des"));
-                labelfname.setText(rs.getString("flightname"));
-                labelfcode.setText(rs.getString("flightcode"));
-                labeldate.setText(rs.getString("ddate"));
+        if (rs.next()) {
+            tfname.setText(rs.getString("name"));
+            tfnationality.setText(rs.getString("nationality"));
+            lblsrc.setText(rs.getString("src"));
+            lbldest.setText(rs.getString("des"));
+            labelfname.setText(rs.getString("flightname"));
+            labelfcode.setText(rs.getString("flightcode"));
+            labeldate.setText(rs.getString("ddate"));
 
-                // Play success sound
-                playSound("success.wav");
-                JOptionPane.showMessageDialog(null, "✅ PNR Found! Boarding Pass Generated.");
-            } else {
-                // Play error sound
-                playSound("error.wav");
-                JOptionPane.showMessageDialog(null, "❌ Invalid PNR. Please enter correct details.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            // Assuming you generate a boarding pass here (PDF, image, etc.)
+            String boardingPassPath = "path/to/generated/boarding-pass.pdf";  // Replace with actual path
+            String recipientEmail = "recipient-email@example.com";  // Replace with the recipient's email
+
+            // Send the email with the boarding pass attached
+            EmailSender.sendEmail(recipientEmail, "Your Boarding Pass", "Please find your boarding pass attached.", boardingPassPath);
+
+            // Play success sound
+            playSound("success.wav");
+            JOptionPane.showMessageDialog(null, "✅ PNR Found! Boarding Pass Generated and Sent via Email.");
+        } else {
+            // Play error sound
+            playSound("error.wav");
+            JOptionPane.showMessageDialog(null, "❌ Invalid PNR. Please enter correct details.");
         }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
+
 
     public static void main(String[] args) {
         new BoardingPass();
